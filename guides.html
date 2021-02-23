@@ -1,0 +1,140 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Ricky Hu</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+	<style>
+	table, th, td {
+	  border: 1px solid black;
+	}
+	body {
+		color: black;
+		}
+	</style>
+		<!-- Nav -->
+			<nav id="nav">
+				<ul class="container">
+					<li><a href="index.html#intro">Intro</a></li>
+					<li><a href="index.html#work">Current Work</a></li>
+					<li><a href="projects.html">Other Projects</a></li>
+					<li><a href="cv.html">CV</a></li>
+					<li><a href="#contact">Contact</a></li>
+				</ul>
+			</nav>
+
+		<!-- Work -->
+			<article id="intro" class="wrapper style2">
+				<div class="container">
+					<header>
+						<h2>Some guides that may be useful:</h2>
+					</header>
+					<br>
+					<h3>How to extend laptop battery life:</h3>
+					<p>Some software changes you can make to remove the annoying bloatware, monitoring, and background services that most of us don't need on PC. For reference, my ASUS Zephyrus G14 went from ~8h (-11W drain) on standby to ~12h (-6W drain on standby) by doing the following.</p>
+					<br>
+					<b>BEFORE DOING ANYTHING, I suggest to write down what changes you make in case the performance differences make it miserable for you and you forget what you changed. I was still able to run some neural networks and play AAA video games on battery, but of course performance is better plugged in or with all the settings to max.</b>
+					<br>
+					<br>
+					<table style="width:100%">
+					
+					  <tr>
+						<th><b>Step</b></th>
+						<th><b>Instructions</b></th>
+						<th><b>Reasoning</b></th>
+					  </tr>
+					  <tr>
+						<td>Install battery monitors and process-control tools</td>
+						<td>Download BatteryInfoView (BatteryBar has turned to freemium sadly) and Autoruns (from Microsoft).</td>
+						<td>Windows' available power-monitoring and process control tools don't go deep enough. They shifted away from that and removed a lot of the detailed functionality so we need to get some additional tools. Task manager is a shell of what it could be (i.e. the "Startup" program controller in task manager is a total front, only shows extra installed program and you don't get to see a majority of background programs that startup automatically)</td>
+					  </tr>
+					  <tr>
+						<td>Change default graphics to integrated</td>
+						<td>e.g. NVIDIA GPUs - go to NVIDIA Control Panel->3D Global settings->use integrated graphics (don't use auto-select). Note you may have to individually select high performance GPU for games/rendering in the tab to the right.</td>
+						<td>Having the GPU running uses a lot of power, some programs are greedy and by default request GPU usage (e.g. Discord)</td>
+					  </tr>
+					  <tr>
+						<td>Change power plan settings</td>
+						<td>Go to settings->power and sleep->additional power settings->change plan settings->change advanced power settings. This varies on Intel Vs. AMD processors, but if you have the following options, change them to lower-power settings in the "On battery" option: wireless adapter settings->maximum power saving, PCI link state power management->maximum power savings, processor power management->system cooling poicy->passive, processor power management->processor performance boost mode->disabled, switchable dynamic graphics->global settings->optimize power savings. <br><br> Note that to get processor boost settings, you have to go to registry editor (start->type regedit), go to HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Contro l\Power\PowerSettings\54533251-82be-4824-96c1-47b60b740d00\be337238-0d82-4146-a960-4f3749d470c7, select Attributes, change "Attributes" from 1 to 2. The value should now be “0x00000002 (2).”
+						</td>
+						<td>This is just to reduce (usually unnecessary) performance when on battery. Note there are people who say to limit max processor state to 99%. This reduces the maximum clock rate of the processor (at least for AMD), you can achieve similar power savings by turning off boost.</td>
+					  </tr>
+						<tr>
+						<td>Disabled unnecessary autoruns</td>
+						<td>Open autoruns that you downloaded as administrator and disable all extraneous programs, particularly under Task Scheduler (things that run on their own) and Services. Every computer and manufacturer is different so I'll use what I disabled as an example. From task scheduler, I disabled Adobe update, NVIDIA update (have to check updates on my own), NVIDIA crash reports, StartCN/StartDVR (AMD's control panel), ASUS promotion, and OneDrive. From services, I disabled gaming services (anything XBox related is fluff). From other categories I disabled extra downloaded programs (Discord, Teams) and anything related to Skype and Lync. <br><br><b>NOTE1: If some of your installed programs don't run e.g. Sykpe this is the step to look to re-enable stuff. </b> <br><br><b>NOTE2: The manufacturer has some bloatware fluff, like Armoury Crate for ASUS. The performance impact I foudn was minimal and it allows some easy updating and fan speed control so I kept it. In case some of your hardware doesn't work, I don't recommend disabling manufacturer programs unless you are confident it is unnecessar (lie ASUS promotion)</b>
+						</td>
+						<td>Task manager does not provide nearly enough options to control what runs automatically. This is where you find the programs hogging CPU that you want to disable. Task manager's startup controller is kind of pathetic, it only listed 5 out of the 30+ programs that start on my PC, likely in fear of users disabling some necessary stuff.</td>
+						</tr>
+					  <tr>
+						<td>Disable extraneous services</td>
+						<td>Press start->type msconfig->go to services tab and disable extraneous services. As a rule of thumb, start by clicking "Hide all Microsoft services" to see what does not come with a clean operating system. <b>Always remove McAfee, sorry McAfee.<b> Again, anything you disable here might cause those related programs to not work so remember to come back here if you have to re-start services for a program. Uncheck "Hide all Microsoft services"->disable all Hyper-V services including HV Host Service (if you're not planning on running virutal machines) and disable all Xbox services.
+						</td>
+						<td>Microsoft services are hidden from autoruns sometimes so we have to go into msconfig. Hyper-V is useless unless you need a virtual machine and Xbox adds almost no value while hogging CPU unless you really want to be in the Xbox ecosystem.</td>
+					  </tr>
+					  <tr>
+						<td>Uninstall extraneous programs</td>
+						<td>Press start->add or remove programs->remove anything that seems extraneous to you. For me, I removed McAfee, everything XBox, Office 365 (the one pre-installed is not the latest that I can get from Queen's and also has annoying constant network usage) and all the Windows Games that came pre-installed.
+						</td>
+						<td>Self-explanatory, just removing bloatware and freeing up disk space. Disk space doesn't immediately slow down the computer until it gets all fragmented and your data is stored at weird addresses.</td>
+					  </tr>
+					  <tr>
+						<td>Turn off all the constant monitoring by Windows</td>
+						<td>Press start->settings and then change the following. In Gaming, pretty much disable everything you can under the sun. In Privacy->General, disable everything. In each App Permissions category on the left, disable at your discretion. I disabled everything because I don't use any built-in Microsoft apps, but if you use the camera or Outlook for instance, you don't want to disable calendar, mic, or camera access. In Updates and Security->Delievery optimization, disable "Allow downloads from other PCs".
+						</td>
+						<td>Windows by default has a lot of unnecessary processes running in the background. XBox, for instance, constantly checks for updates and prompts if you want to use Game Bar etc. There are some auto-sync settings as well in app permissions and updates which run at automated times, using CPU. I would not disable updates - as bad as windows updates are, they do patch flaws and troubleshooting forums online are always based on the latest Windows build.</td>
+					  </tr>
+					  <tr>
+						<td>Adjust individual programs</td>
+						<td>This step is different for every manufacturer, but go into any programs that either control hardware or you use frequently and check battery saving options. For instance, on ASUS, Armoury Crate is the meagre hardware monitor software and you can select "Silent" mode to decrease CPU power. In AMD Software (or Adrenalin, whatever it is called now), disable things such as visual boost effects, vari-bright etc. In user applications, check if they use hardware acceleration (for instance, in Chrome, under settings->advanced settings, you can turn acceleration off to save power at the cost of performance. I left it on in Chrome but turned it off for Discord). 
+						</td>
+						<td>Each program can request a chunk of CPU and GPU power so monitor how much extra computational resources they need. For instance, on idle I am at -6W drain but with Chrome open on YouTube, I average at -11.5W drain.</td>
+					  </tr>
+					  <tr>
+						<td>Check on-demand CPU usage</td>
+						<td>If you hear your fan speeding up, open task manager and sort by CPU usage to see which program is demanding the most CPU. You can choose to either ignore it as it is temporary (e.g. Window Update uses a boatload of CPU but ends quickly), necessary (e.g. Chrome is a CPU hog but I don't mind. Firefox is a better alternative.), or unnecessary (e.g. if AMD Software is running in the background, disable it from autoruns or end the task for a band-aid solution).
+						</td>
+						<td>On idle, no PC should have the fan whirring at top speed. My laptop has a set idle fan speed so it still runs, but it will not heat up. If it does and the power draw isn't planned, something is demanding CPU so I would check here.</td>
+					  </tr>
+					  <tr>
+						<td>Keep drivers up to date</td>
+						<td>Download latest processor (e.g. Intel, AMD) and GPU (e.g. AMD, NVIDIA, BIOS (from your laptop manufacturer) drivers from their websites. Perform a Windows update to see if there are any other auxiliary drivers (e.g. Flash, USB).
+						</td>
+						<td>Sometimes outdated drivers have bugs or incompatibilities that make then erroneously demand too much CPU. For instance, NVIDIA had a USB-C driver problem where the USB-C port drains power even when not in use, fixed by their latest GeForce update.</td>
+					  </tr>
+					</table>
+				</div>
+			</article>
+
+		
+		<!-- Contact -->
+			<article id="contact" class="wrapper style4">
+
+
+							<h3>Feel free to contact me at rhu@qmed.ca</h3>
+							<ul class="social">
+	
+								<li><a href="https://www.linkedin.com/in/ricky-hu-78a31383/" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
+								<li><a href="https://github.com/ricky-hu" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							</ul>
+
+					<footer>
+						<ul id="copyright">
+							<li>&copy; Ricky Hu. Designed in HTML5.</li>
+						</ul>
+					</footer>
+				</div>
+			</article>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
